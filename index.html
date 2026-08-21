@@ -18,15 +18,17 @@ body{background:#0a0e1a;color:white;padding-bottom:80px;}
 .box h1{font-size:24px;color:#00f260;margin-top:5px;}
 .btn{width:90%;margin:10px 5%;padding:15px;background:linear-gradient(135deg,#00f260,#0575e6);border:none;border-radius:15px;color:black;font-size:18px;font-weight:bold;}
 .nav{position:fixed;bottom:0;width:100%;background:#1a1f2e;display:flex;justify-content:space-around;padding:10px 0;}
-.nav div{text-align:center;font-size:12px;color:#888;}
+.nav div{text-align:center;font-size:12px;color:#888;cursor:pointer;}
 .nav .active{color:#00f260;}
 .orange{background:linear-gradient(135deg,#f7971e,#ffd200);color:black;}
+.page{display:none;}
+.page.active{display:block;}
 </style>
 </head>
 <body>
 
 <!-- HOME PAGE -->
-<div id="home">
+<div id="home" class="page active">
 <div class="header">+91 98XXXXXX98</div>
 <div class="wallet">
 <h3>WALLET BALANCE</h3>
@@ -45,13 +47,52 @@ body{background:#0a0e1a;color:white;padding-bottom:80px;}
 </div>
 </div>
 
+<!-- REFER PAGE -->
+<div id="refer" class="page">
+<div class="header">Refer & Earn</div>
+<div class="card">
+<h2>🎁 Refer karke ₹50 kamao</h2>
+<p>Har dost ke join karne par ₹50 direct wallet me</p>
+<button class="btn" onclick="alert('Link copy ho gaya')">Share Link</button>
+</div>
+</div>
+
+<!-- PREMIUM PAGE -->
+<div id="premium" class="page">
+<div class="header">Go Premium</div>
+<div class="card orange">
+<h2>👑 Premium ₹99</h2>
+<p>• Withdraw Unlock<br>• 2x Earning<br>• No Ads</p>
+<button class="btn">Buy Premium</button>
+</div>
+</div>
+
+<!-- WITHDRAW PAGE -->
+<div id="withdraw" class="page">
+<div class="header">Withdraw</div>
+<div class="card">
+<h2>💰 Withdraw Money</h2>
+<p>Min Withdraw: ₹500</p>
+<button class="btn">Withdraw to UPI</button>
+</div>
+</div>
+
 <!-- BOTTOM NAV -->
 <div class="nav">
-<div class="active">🏠<br>Home</div>
-<div>👥<br>Refer</div>
-<div>👑<br>Premium</div>
-<div>💰<br>Withdraw</div>
+<div class="active" onclick="showPage('home')">🏠<br>Home</div>
+<div onclick="showPage('refer')">👥<br>Refer</div>
+<div onclick="showPage('premium')">👑<br>Premium</div>
+<div onclick="showPage('withdraw')">💰<br>Withdraw</div>
 </div>
+
+<script>
+function showPage(id){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.querySelectorAll('.nav div').forEach(n=>n.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+event.currentTarget.classList.add('active');
+}
+</script>
 
 </body>
 </html>
