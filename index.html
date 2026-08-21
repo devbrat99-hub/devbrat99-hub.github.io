@@ -1,32 +1,55 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devbrat ki Website</title>
+    <title>Devbrat - Portfolio</title>
     <style>
+        * {margin: 0;padding: 0;box-sizing: border-box;}
         body {
-            background: linear-gradient(135deg, #001f3f, #0074D9); 
-            color: white; 
-            text-align: center; 
-            font-family: Arial; 
-            padding-top: 100px;
-            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 60px 40px;
+            max-width: 700px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
         h1 {
-            font-size: 80px; 
-            color: #00ff88; 
-            text-shadow: 0 0 20px #00ff88;
+            color: #667eea;
+            font-size: 120px;
+            font-weight: 900;
+            letter-spacing: 5px;
+            text-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
             margin-bottom: 20px;
         }
-        p {
-            font-size: 24px;
+        p {color: #333;font-size: 24px;margin: 15px 0;}
+        .btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 30px;
         }
     </style>
 </head>
 <body>
-    <h1>DEVBRAT</h1>
-    <p>Welcome to my public website 😎</p>
-    <p>Ab ye duniya me koi bhi dekh sakta hai</p>
+    <div class="card">
+        <h1>DEVBRAT</h1>
+        <p>Student | Web Developer | Creator</p>
+        <p>Welcome to my public website 😎</p>
+        <button class="btn">Contact Me</button>
+    </div>
 </body>
 </html>
