@@ -13,16 +13,20 @@ body{background:#0a0e1a;color:white;padding-bottom:80px;}
 .wallet h1{font-size:40px;margin:10px 0;}
 .card{background:#1a1f2e;border-radius:15px;padding:15px;margin:10px 15px;}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px;}
-.box{background:#1a1f2e;border-radius:15px;padding:20px;text-align:center;}
-.box h2{font-size:18px;color:#ccc;}
-.box h1{font-size:24px;color:#00f260;margin-top:5px;}
-.btn{width:90%;margin:10px 5%;padding:15px;background:linear-gradient(135deg,#00f260,#0575e6);border:none;border-radius:15px;color:black;font-size:18px;font-weight:bold;}
+.box{background:#1a1f2e;border-radius:15px;padding:20px;text-align:center;cursor:pointer;}
+.box:active{transform:scale(0.95);}
+.box b{color:#00f260;}
+.btn{width:90%;margin:10px 5%;padding:15px;background:linear-gradient(135deg,#00f260,#0575e6);border:none;border-radius:15px;color:black;font-size:18px;font-weight:bold;cursor:pointer;}
 .nav{position:fixed;bottom:0;width:100%;background:#1a1f2e;display:flex;justify-content:space-around;padding:10px 0;}
 .nav div{text-align:center;font-size:12px;color:#888;cursor:pointer;}
 .nav .active{color:#00f260;}
 .orange{background:linear-gradient(135deg,#f7971e,#ffd200);color:black;}
 .page{display:none;}
 .page.active{display:block;}
+input{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:none;background:#0a0e1a;color:white;}
+.popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:none;justify-content:center;align-items:center;}
+.popup-content{background:#1a1f2e;padding:20px;border-radius:15px;text-align:center;width:80%;}
+.popup img{width:200px;margin:10px 0;}
 </style>
 </head>
 <body>
@@ -32,18 +36,18 @@ body{background:#0a0e1a;color:white;padding-bottom:80px;}
 <div class="header">+91 98XXXXXX98</div>
 <div class="wallet">
 <h3>WALLET BALANCE</h3>
-<h1>₹3000.00</h1>
-<p>Total earned ₹3000.00 | 30000 MB sold</p>
+<h1 id="balance">₹0.00</h1>
+<p id="sold">Total earned ₹0.00 | 0 MB sold</p>
 </div>
 <div class="card orange">
 👑 Withdraw unlock karne ke liye ₹99 Premium plan lo
 </div>
 <h2 style="padding:15px;">Data sell karo <span style="float:right;font-size:14px;">10 MB = ₹1</span></h2>
 <div class="grid">
-<div class="box">📶 10 MB<br><b style="color:#00f260;">+₹1.00</b></div>
-<div class="box">📶 50 MB<br><b style="color:#00f260;">+₹5.00</b></div>
-<div class="box">📶 100 MB<br><b style="color:#00f260;">+₹10.00</b></div>
-<div class="box">📶 250 MB<br><b style="color:#00f260;">+₹25.00</b></div>
+<div class="box" onclick="sellData(10,1)">📶 10 MB<br><b>+₹1.00</b></div>
+<div class="box" onclick="sellData(50,5)">📶 50 MB<br><b>+₹5.00</b></div>
+<div class="box" onclick="sellData(100,10)">📶 100 MB<br><b>+₹10.00</b></div>
+<div class="box" onclick="sellData(250,25)">📶 250 MB<br><b>+₹25.00</b></div>
 </div>
 </div>
 
@@ -53,7 +57,10 @@ body{background:#0a0e1a;color:white;padding-bottom:80px;}
 <div class="card">
 <h2>🎁 Refer karke ₹50 kamao</h2>
 <p>Har dost ke join karne par ₹50 direct wallet me</p>
-<button class="btn" onclick="alert('Link copy ho gaya')">Share Link</button>
+<div style="background:#0a0e1a;padding:10px;border-radius:10px;margin:10px 0;">
+<b>Tera Refer Code: DEVBRAT50</b>
+</div>
+<button class="btn" onclick="copyCode()">Copy Code & Share</button>
 </div>
 </div>
 
@@ -63,7 +70,7 @@ body{background:#0a0e1a;color:white;padding-bottom:80px;}
 <div class="card orange">
 <h2>👑 Premium ₹99</h2>
 <p>• Withdraw Unlock<br>• 2x Earning<br>• No Ads</p>
-<button class="btn">Buy Premium</button>
+<button class="btn" onclick="showQR()">Buy Premium</button>
 </div>
 </div>
 
@@ -72,25 +79,75 @@ body{background:#0a0e1a;color:white;padding-bottom:80px;}
 <div class="header">Withdraw</div>
 <div class="card">
 <h2>💰 Withdraw Money</h2>
-<p>Min Withdraw: ₹500</p>
-<button class="btn">Withdraw to UPI</button>
+<p style="color:#ff5555;">Min Withdraw: ₹500</p>
+<input id="upi" type="text" placeholder="UPI ID daalo - example@upi">
+<input id="amount" type="number" placeholder="Amount daalo">
+<button class="btn" onclick="withdraw()">Withdraw Request</button>
+</div>
+</div>
+
+<!-- QR POPUP -->
+<div id="qrPopup" class="popup" onclick="this.style.display='none'">
+<div class="popup-content">
+<h2>Scan karke ₹99 Pay karo</h2>
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=devbrat@upi&am=99" alt="QR">
+<p>UPI: devbrat@upi</p>
 </div>
 </div>
 
 <!-- BOTTOM NAV -->
 <div class="nav">
-<div class="active" onclick="showPage('home')">🏠<br>Home</div>
-<div onclick="showPage('refer')">👥<br>Refer</div>
-<div onclick="showPage('premium')">👑<br>Premium</div>
-<div onclick="showPage('withdraw')">💰<br>Withdraw</div>
+<div class="active" onclick="showPage('home',this)">🏠<br>Home</div>
+<div onclick="showPage('refer',this)">👥<br>Refer</div>
+<div onclick="showPage('premium',this)">👑<br>Premium</div>
+<div onclick="showPage('withdraw',this)">💰<br>Withdraw</div>
 </div>
 
 <script>
-function showPage(id){
+let balance = 0;
+let mbSold = 0;
+let isPremium = false;
+
+function sellData(mb, rupees){
+balance += rupees;
+mbSold += mb;
+document.getElementById('balance').innerText = '₹' + balance.toFixed(2);
+document.getElementById('sold').innerText = 'Total earned ₹' + balance.toFixed(2) + ' | ' + mbSold + ' MB sold';
+alert(mb + ' MB bech diye! +₹' + rupees);
+}
+
+function showPage(id, el){
 document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
 document.querySelectorAll('.nav div').forEach(n=>n.classList.remove('active'));
 document.getElementById(id).classList.add('active');
-event.currentTarget.classList.add('active');
+el.classList.add('active');
+}
+
+function copyCode(){
+navigator.clipboard.writeText('DEVBRAT50');
+alert('Refer Code Copy ho gaya!');
+}
+
+function showQR(){
+document.getElementById('qrPopup').style.display='flex';
+}
+
+function withdraw(){
+let upi = document.getElementById('upi').value;
+let amt = parseInt(document.getElementById('amount').value);
+if(!isPremium){
+alert('Limit khatam! Pehle ₹99 Premium lo withdraw unlock karne ke liye');
+return;
+}
+if(amt < 500){
+alert('Min ₹500 withdraw kar sakte ho');
+return;
+}
+if(amt > balance){
+alert('Itne paise nahi hai wallet me');
+return;
+}
+alert('Withdraw Request bhej di gayi: ₹' + amt + ' to ' + upi);
 }
 </script>
 
